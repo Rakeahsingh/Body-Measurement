@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "93978860289",
+    "project_id": "body-measurement-a4e81",
+    "storage_bucket": "body-measurement-a4e81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93978860289:android:cd1704a2d05626152e5900",
+        "android_client_info": {
+          "package_name": "com.example.bodymeasurement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtzklr8iQtUdwfTTXK0m9arxDCfxKonX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
