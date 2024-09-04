@@ -22,7 +22,7 @@ fun AnonymousSignInButton(
     modifier: Modifier = Modifier,
     loadingState: Boolean = false,
     isEnabled: Boolean = true,
-    primaryText: String = "Continue Without Loading..",
+    primaryText: String = "Continue With Anonymous?",
     secondaryText: String = "Please Wait...",
     onClick: () -> Unit
 ) {

@@ -1,4 +1,4 @@
-package com.example.bodymeasurement.app_features.presentation.signInScreen
+package com.example.bodymeasurement.app_features.presentation.signIn
 
 data class SignInState(
     val isGoogleSignInButtonLoading: Boolean = false,

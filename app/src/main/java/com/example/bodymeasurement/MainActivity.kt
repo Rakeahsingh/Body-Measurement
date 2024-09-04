@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -24,9 +22,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.bodymeasurement.app_features.domain.model.AuthStatus
-import com.example.bodymeasurement.app_features.presentation.signInScreen.SignInViewModel
+import com.example.bodymeasurement.app_features.presentation.signIn.SignInViewModel
 import com.example.bodymeasurement.core.navigation.Navigation
-import com.example.bodymeasurement.core.navigation.Screen
+import com.example.bodymeasurement.core.navigation.Routes
 import com.example.bodymeasurement.ui.theme.BodyMeasurementTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,10 +52,10 @@ class MainActivity : ComponentActivity() {
                         when(authState){
                             AuthStatus.LOADING -> {}
                             AuthStatus.AUTHORISED -> {
-                                navController.navigate(Screen.DashBoardScreen.route){ popUpTo(0) }
+                                navController.navigate(Routes.DashboardScreen){ popUpTo(0) }
                             }
                             AuthStatus.UNAUTHORISED -> {
-                                navController.navigate(Screen.SignInScreen.route){ popUpTo(0) }
+                                navController.navigate(Routes.SignInScreen){ popUpTo(0) }
                             }
 
                         }
@@ -68,7 +66,6 @@ class MainActivity : ComponentActivity() {
                 val snackBarHostState = remember {
                     SnackbarHostState()
                 }
-
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     snackbarHost = { SnackbarHost(hostState = snackBarHostState) }

@@ -1,4 +1,4 @@
-package com.example.bodymeasurement.app_features.presentation.signInScreen
+package com.example.bodymeasurement.app_features.presentation.signIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -87,10 +87,10 @@ fun SignInScreen(
                 Image(
                     painter = painterResource(id = R.drawable.img),
                     contentDescription = "img logo",
-                    modifier = modifier.size(120.dp)
+                    modifier = modifier.size(200.dp)
                 )
 
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.size(30.dp))
 
                 Text(
                     text = "Body MeasureMate",
@@ -99,7 +99,7 @@ fun SignInScreen(
 
                 Text(
                     text = "Measure progress, not perfection",
-                    style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic)
+                    style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic)
                 )
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.4f))
@@ -144,10 +144,10 @@ fun SignInScreen(
                     Image(
                         painter = painterResource(id = R.drawable.img),
                         contentDescription = "img logo",
-                        modifier = modifier.size(120.dp)
+                        modifier = modifier.size(200.dp)
                     )
 
-                    Spacer(modifier = Modifier.size(20.dp))
+                    Spacer(modifier = Modifier.size(30.dp))
 
                     Text(
                         text = "Body MeasureMate",
@@ -156,7 +156,7 @@ fun SignInScreen(
 
                     Text(
                         text = "Measure progress, not perfection",
-                        style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic)
+                        style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic)
                     )
 
                 }

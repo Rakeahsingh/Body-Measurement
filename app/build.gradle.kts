@@ -1,8 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     id("com.google.gms.google-services")
-//    alias(libs.plugins.daggerHilt)
+    id("com.google.devtools.ksp")
+    id ("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization")
 
 }
 
@@ -33,11 +36,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -50,6 +54,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
 }
 
 dependencies {
@@ -79,8 +88,10 @@ dependencies {
     implementation(libs.coil.compose)
 
     // Dagger Hilt
-    implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation ("com.google.dagger:hilt-android:2.52")
+    ksp ("com.google.dagger:dagger-compiler:2.52")
+    ksp ("com.google.dagger:hilt-compiler:2.52")
 
     // firebase
     implementation(libs.firebase.bom)
@@ -94,5 +105,11 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+
+//    // Desugaring
+    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:2.1.1")
+
+    // serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2")
 
 }

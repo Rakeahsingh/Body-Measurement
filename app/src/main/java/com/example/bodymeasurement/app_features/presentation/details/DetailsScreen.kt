@@ -1,14 +1,14 @@
-package com.example.bodymeasurement.app_features.presentation.addScreen
+package com.example.bodymeasurement.app_features.presentation.details
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AddScreen(
+fun DetailsScreen(
     modifier: Modifier = Modifier
 ) {
 
-    Text(text = "Add Screen")
+    Text(text = "Details Screen")
 
 }

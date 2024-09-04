@@ -1,4 +1,4 @@
-package com.example.bodymeasurement.app_features.presentation.signInScreen
+package com.example.bodymeasurement.app_features.presentation.signIn
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
