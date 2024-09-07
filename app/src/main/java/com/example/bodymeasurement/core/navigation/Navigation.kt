@@ -19,6 +19,7 @@ import com.example.bodymeasurement.app_features.presentation.addItem.AddItemView
 import com.example.bodymeasurement.app_features.presentation.dashboard.DashBoardScreen
 import com.example.bodymeasurement.app_features.presentation.dashboard.DashBoardViewModel
 import com.example.bodymeasurement.app_features.presentation.details.DetailsScreen
+import com.example.bodymeasurement.app_features.presentation.details.DetailsViewModel
 import com.example.bodymeasurement.app_features.presentation.signIn.SignInScreen
 import com.example.bodymeasurement.app_features.presentation.signIn.SignInViewModel
 import com.example.bodymeasurement.core.utils.UiEvent
@@ -100,7 +101,16 @@ fun Navigation(
         }
 
         composable<Routes.DetailsScreen>{
-            DetailsScreen()
+            val viewModel: DetailsViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsState()
+            DetailsScreen(
+                snackBarHostState = snackBarHostState,
+                paddingValues = paddingValues,
+                state = state,
+                viewModel = viewModel,
+                onEvent = viewModel::onEvent,
+                onBackIconClick = { navController.navigateUp() }
+            )
         }
 
 

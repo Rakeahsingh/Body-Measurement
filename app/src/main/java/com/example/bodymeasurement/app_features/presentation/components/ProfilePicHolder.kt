@@ -21,6 +21,7 @@ import com.example.bodymeasurement.ui.theme.CustomBlue
 import com.example.bodymeasurement.ui.theme.CustomPink
 import com.example.bodymeasurement.ui.theme.CustomRed
 import com.example.bodymeasurement.ui.theme.CustomSky
+import com.example.bodymeasurement.ui.theme.CustomYellow
 
 @Composable
 fun ProfilePicHolder(
@@ -42,7 +43,7 @@ fun ProfilePicHolder(
             .size(placeHolderSize)
             .border(
                 width = borderWidth,
-                brush = Brush.linearGradient(listOf(CustomBlue, CustomPink, CustomRed, CustomSky)),
+                brush = Brush.linearGradient(listOf(CustomBlue, CustomYellow, CustomPink, CustomRed, CustomSky)),
                 shape = CircleShape
             )
             .padding(padding)
