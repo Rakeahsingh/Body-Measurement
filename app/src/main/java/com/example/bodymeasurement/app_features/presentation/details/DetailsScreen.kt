@@ -88,6 +88,7 @@ fun DetailsScreen(
 
 
 
+
     Column(
         modifier = modifier
             .fillMaxSize()
