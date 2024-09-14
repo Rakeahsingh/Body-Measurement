@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp")
+//    id("com.google.devtools.ksp")
+    id ("kotlin-kapt")
     id ("com.google.dagger.hilt.android")
     kotlin("plugin.serialization")
 
@@ -57,9 +58,6 @@ android {
 
 }
 
-composeCompiler {
-    enableStrongSkippingMode = true
-}
 
 dependencies {
 
@@ -90,8 +88,10 @@ dependencies {
     // Dagger Hilt
     implementation(libs.androidx.hilt.navigation.compose)
     implementation ("com.google.dagger:hilt-android:2.52")
-    ksp ("com.google.dagger:dagger-compiler:2.52")
-    ksp ("com.google.dagger:hilt-compiler:2.52")
+//    ksp ("com.google.dagger:dagger-compiler:2.52")
+//    ksp ("com.google.dagger:hilt-compiler:2.52")
+    kapt ("com.google.dagger:dagger-compiler:2.52")
+    kapt ("com.google.dagger:hilt-compiler:2.52")
 
     // firebase
     implementation(libs.firebase.bom)
