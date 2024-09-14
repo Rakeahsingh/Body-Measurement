@@ -62,7 +62,7 @@ fun ProfileBottomSheet(
             ) {
                 ProfilePicHolder(
                     padding = 5.dp,
-                    borderWidth = 2.dp,
+                    borderWidth = 3.dp,
                     placeHolderSize = 120.dp,
                     profilePicUrl = user?.profilePicUrl
                 )

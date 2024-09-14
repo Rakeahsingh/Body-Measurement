@@ -31,7 +31,7 @@ fun DashBoardTopBar(
             ) {
                 ProfilePicHolder(
                     padding = 2.dp,
-                    borderWidth = 1.dp,
+                    borderWidth = 1.5.dp,
                     placeHolderSize = 30.dp,
                     profilePicUrl = profilePicUrl
                 )

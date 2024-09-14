@@ -1,6 +1,8 @@
 package com.example.bodymeasurement.app_features.presentation.components
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -16,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.example.bodymeasurement.R
 import kotlin.math.sin
 
@@ -63,7 +66,9 @@ fun NewValueInputBar(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.img_2),
-                        contentDescription = "calender icon"
+                        contentDescription = "calender icon",
+                        modifier = Modifier.padding(horizontal = 5.dp)
+                            .size(20.dp)
                     )
                 }
             }

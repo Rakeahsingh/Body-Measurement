@@ -82,7 +82,8 @@ fun AddItemScreen(
         onDismissButtonClick = {
             onEvent(AddItemEvent.OnAddItemDialogDismiss)
             isAddItemDialogOpen = false
-        }
+        },
+        confirmTextButton = "save"
     )
 
 

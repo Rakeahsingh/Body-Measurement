@@ -1,5 +1,6 @@
 package com.example.bodymeasurement
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
@@ -25,18 +27,32 @@ import com.example.bodymeasurement.app_features.domain.model.AuthStatus
 import com.example.bodymeasurement.app_features.presentation.signIn.SignInViewModel
 import com.example.bodymeasurement.core.navigation.Navigation
 import com.example.bodymeasurement.core.navigation.Routes
+import com.example.bodymeasurement.core.network.NetworkConnectivity
+import com.example.bodymeasurement.core.network.NetworkConnectivityImpl
+import com.example.bodymeasurement.core.network.NetworkStatus
 import com.example.bodymeasurement.ui.theme.BodyMeasurementTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+     private lateinit var networkConnectivity: NetworkConnectivity
+
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        networkConnectivity = NetworkConnectivityImpl(this)
+
         super.onCreate(savedInstanceState)
         installSplashScreen()
         enableEdgeToEdge()
         setContent {
             BodyMeasurementTheme {
+
+                val networkStatus by networkConnectivity.networkStatus().collectAsState(
+                    initial = NetworkStatus.Available
+                )
 
                 val windowSizeClass = calculateWindowSizeClass(activity = this)
                 val navController = rememberNavController()
@@ -78,6 +94,8 @@ class MainActivity : ComponentActivity() {
                         sinInViewModel = signInViewModel,
                         snackBarHostState = snackBarHostState
                     )
+
+                    Text(text = "Network status ${networkStatus.message}")
                     
                 }
             }

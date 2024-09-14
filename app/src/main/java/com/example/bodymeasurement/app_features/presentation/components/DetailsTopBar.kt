@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.bodymeasurement.app_features.domain.model.BodyPart
@@ -71,7 +72,8 @@ fun DetailsTopBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
-                    contentDescription = "add icon"
+                    contentDescription = "add icon",
+                    tint = Color.Black
                 )
             }
 

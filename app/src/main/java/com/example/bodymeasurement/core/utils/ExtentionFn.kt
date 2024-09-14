@@ -1,5 +1,7 @@
 package com.example.bodymeasurement.core.utils
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SelectableDates
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -50,5 +52,17 @@ fun Long?.changeMillisToLocalDate(): LocalDate {
         } ?: LocalDate.now()
     } catch (e: Exception) {
         LocalDate.now()
+    }
+}
+
+
+@ExperimentalMaterial3Api
+object PastOrPresentSelectableDates : SelectableDates {
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        return utcTimeMillis <= System.currentTimeMillis()
+    }
+
+    override fun isSelectableYear(year: Int): Boolean {
+        return year <= LocalDate.now().year
     }
 }

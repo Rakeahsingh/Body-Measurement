@@ -96,6 +96,7 @@ class AddItemViewModel @Inject constructor(
 
     private fun upsertBodyPart(bodyPart: BodyPart){
         viewModelScope.launch {
+            if (bodyPart.name.isBlank()) return@launch
             databaseRepository.upsertBodyPart(bodyPart)
                 .onSuccess {
                     _uiEvent.send(UiEvent.SnackBar("Body Part Saved Successfully"))

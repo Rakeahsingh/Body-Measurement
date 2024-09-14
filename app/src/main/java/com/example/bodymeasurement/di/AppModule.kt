@@ -1,6 +1,8 @@
 package com.example.bodymeasurement.di
 
 import android.content.Context
+import android.net.ConnectivityManager
+import androidx.core.content.getSystemService
 import androidx.credentials.CredentialManager
 import com.example.bodymeasurement.app_features.data.repository.AuthRepositoryImpl
 import com.example.bodymeasurement.app_features.data.repository.DatabaseRepositoryImpl
@@ -34,6 +36,7 @@ object AppModule {
     fun provideFirebaseStore(): FirebaseFirestore{
         return Firebase.firestore
     }
+
 
     @Provides
     @Singleton

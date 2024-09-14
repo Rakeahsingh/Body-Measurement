@@ -3,15 +3,18 @@ package com.example.bodymeasurement.app_features.presentation.details
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,12 +23,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.bodymeasurement.R
+import com.example.bodymeasurement.app_features.presentation.components.ChartTimeRangeButton
 import com.example.bodymeasurement.app_features.presentation.components.DetailsTopBar
+import com.example.bodymeasurement.app_features.presentation.components.HistorySection
 import com.example.bodymeasurement.app_features.presentation.components.MeasurementDialog
+import com.example.bodymeasurement.app_features.presentation.components.MeasuringDatePicker
+import com.example.bodymeasurement.app_features.presentation.components.NewValueInputBar
+import com.example.bodymeasurement.core.utils.PastOrPresentSelectableDates
 import com.example.bodymeasurement.core.utils.UiEvent
+import com.example.bodymeasurement.core.utils.changeLocalDateToDateString
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
@@ -87,6 +100,56 @@ fun DetailsScreen(
     )
 
 
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = System.currentTimeMillis(),
+        selectableDates = PastOrPresentSelectableDates
+    )
+    var isDatePickerDialogOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+    MeasuringDatePicker(
+        isOpen = isDatePickerDialogOpen,
+        dateState = datePickerState,
+        onDismissRequest = { isDatePickerDialogOpen = false },
+        onConfirmButtonClick = {
+            onEvent(DetailsEvent.OnDateChange(millis = datePickerState.selectedDateMillis))
+            isDatePickerDialogOpen = false
+        }
+    )
+
+
+    val focusManager = LocalFocusManager.current
+    var isAddUpdateBodyPartDialogOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+    MeasurementDialog(
+        isOpen = isAddUpdateBodyPartDialogOpen,
+        title = "Add/Update Body Part Value",
+        body = {
+            NewValueInputBar(
+                value = state.textFieldValue,
+                date = state.date.changeLocalDateToDateString(),
+                onValueChange = {
+                    onEvent(DetailsEvent.OnTextFieldValueChange(it))
+                },
+                onDoneImeActionClick = { focusManager.clearFocus() },
+                onCalenderIconClick = { isDatePickerDialogOpen = true }
+            )
+        },
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.img_1),
+                contentDescription = "update icon"
+            )
+        },
+        onConfirmButtonClick = {
+            onEvent(DetailsEvent.AddNewValue)
+            isAddUpdateBodyPartDialogOpen = false
+        },
+        onDismissButtonClick = { isAddUpdateBodyPartDialogOpen = false },
+        confirmTextButton = "save"
+    )
+
 
 
     Column(
@@ -98,9 +161,27 @@ fun DetailsScreen(
         DetailsTopBar(
             bodyPart = state.bodyPart,
             onBackIconClick = { onBackIconClick() },
-            onAddIconClick = { /*TODO*/ },
+            onAddIconClick = { isAddUpdateBodyPartDialogOpen = true },
             onDeleteIconClick = { isDeleteBodyPartDialogOpen = true },
             onEvent = onEvent
+        )
+
+        ChartTimeRangeButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            selectedTimeRange = state.timeRange,
+            onClick = { timeRange ->
+                onEvent(DetailsEvent.OnTimeRangeChange(timeRange))
+            }
+        )
+
+        HistorySection(
+            measuringUnitCode = state.bodyPart?.measuringUnit,
+            bodyPartsValue = state.allBodyPartValues,
+            onDeleteClick = { bodyPartValue ->
+                onEvent(DetailsEvent.DeleteBodyPartValue(bodyPartValue))
+            }
         )
         
     }
