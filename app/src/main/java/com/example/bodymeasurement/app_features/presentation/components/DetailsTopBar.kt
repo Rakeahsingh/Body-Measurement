@@ -25,7 +25,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.bodymeasurement.app_features.domain.model.BodyPart
+import com.example.bodymeasurement.app_features.domain.model.MeasuringUnit
 import com.example.bodymeasurement.app_features.presentation.details.DetailsEvent
+import com.example.bodymeasurement.app_features.presentation.details.DetailsState
 import com.example.bodymeasurement.ui.theme.CustomYellow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,7 +38,7 @@ fun DetailsTopBar(
     onBackIconClick: () -> Unit,
     onAddIconClick: () -> Unit,
     onDeleteIconClick: () -> Unit,
-    onEvent: (DetailsEvent) -> Unit
+    onItemClick: (MeasuringUnit) -> Unit
 ){
 
     var isExpended by rememberSaveable {
@@ -103,7 +105,7 @@ fun DetailsTopBar(
                 isExpended = isExpended,
                 onDismissClick = { isExpended = false },
                 onItemClick = { measuringUnit ->
-                    onEvent(DetailsEvent.ChangeMeasuringUnit(measuringUnit))
+                    onItemClick(measuringUnit)
                     isExpended = false
                 }
             )

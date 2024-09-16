@@ -87,10 +87,10 @@ class DetailsViewModel @Inject constructor(
             }
 
             is DetailsEvent.ChangeMeasuringUnit -> {
-                val bodyPart = _state.value.bodyPart?.copy(
+                val bodyPart = state.value.bodyPart?.copy(
                     measuringUnit = event.measuringUnit.code
                 )
-                upsertBodyPart(bodyPart)
+                upsertBodyPart(bodyPart = bodyPart)
             }
 
             DetailsEvent.DeleteBodyPart -> {
@@ -124,7 +124,7 @@ class DetailsViewModel @Inject constructor(
             }
 
             DetailsEvent.RestoreBodyPartValue -> {
-                upsertBodyPartValue(_state.value.recentDeletedBodyPartValue)
+                upsertBodyPartValue(state.value.recentDeletedBodyPartValue)
                 _state.update { it.copy(recentDeletedBodyPartValue = null) }
             }
 

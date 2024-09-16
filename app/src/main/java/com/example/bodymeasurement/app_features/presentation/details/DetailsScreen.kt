@@ -2,6 +2,7 @@ package com.example.bodymeasurement.app_features.presentation.details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import com.example.bodymeasurement.R
 import com.example.bodymeasurement.app_features.presentation.components.ChartTimeRangeButton
 import com.example.bodymeasurement.app_features.presentation.components.DetailsTopBar
 import com.example.bodymeasurement.app_features.presentation.components.HistorySection
+import com.example.bodymeasurement.app_features.presentation.components.LineGraph
 import com.example.bodymeasurement.app_features.presentation.components.MeasurementDialog
 import com.example.bodymeasurement.app_features.presentation.components.MeasuringDatePicker
 import com.example.bodymeasurement.app_features.presentation.components.NewValueInputBar
@@ -163,7 +165,9 @@ fun DetailsScreen(
             onBackIconClick = { onBackIconClick() },
             onAddIconClick = { isAddUpdateBodyPartDialogOpen = true },
             onDeleteIconClick = { isDeleteBodyPartDialogOpen = true },
-            onEvent = onEvent
+            onItemClick = { measuringUnit ->
+                onEvent(DetailsEvent.ChangeMeasuringUnit(measuringUnit))
+            }
         )
 
         ChartTimeRangeButton(
@@ -174,6 +178,14 @@ fun DetailsScreen(
             onClick = { timeRange ->
                 onEvent(DetailsEvent.OnTimeRangeChange(timeRange))
             }
+        )
+
+        LineGraph(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(ratio = 2 / 2f)
+                .padding(16.dp),
+            bodyPartsValue = state.graphBodyPartValues
         )
 
         HistorySection(
