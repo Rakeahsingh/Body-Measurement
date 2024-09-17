@@ -32,22 +32,21 @@ fun LineGraph(
     modifier: Modifier = Modifier,
     bodyPartsValue: List<BodyPartsValue>,
     pathAndCircleWidth: Float = 5f,
-    pathAndCircleColor: Color = MaterialTheme.colorScheme.secondary,
+    pathAndCircleColor: Color = MaterialTheme.colorScheme.primary,
     helperLineColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    textStyle: TextStyle = MaterialTheme.typography.bodySmall
+    textStyle: TextStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface)
 ) {
 
-    val dataPointsValue = bodyPartsValue.asReversed().map { it.value }
+    val dataPointValues = bodyPartsValue.asReversed().map { it.value }
     val dates = bodyPartsValue.asReversed().map { it.date.changeLocalDateToGraphDate() }
 
     val textMeasurer = rememberTextMeasurer()
 
-    val highestValue = dataPointsValue.maxOrNull() ?: 0f
-    val lowestValue = dataPointsValue.minOrNull() ?: 0f
+    val highestValue = dataPointValues.maxOrNull() ?: 0f
+    val lowestValue = dataPointValues.minOrNull() ?: 0f
     val noOfParts = 3
     val difference = (highestValue - lowestValue) / noOfParts
-
-    val valueList = listOf(
+    val valuesList = listOf(
         highestValue.roundToDecimal(),
         (highestValue - difference).roundToDecimal(),
         (lowestValue + difference).roundToDecimal(),
@@ -58,38 +57,32 @@ fun LineGraph(
     val date2 = dates.getOrNull((dates.size * 0.33).toInt()) ?: ""
     val date3 = dates.getOrNull((dates.size * 0.67).toInt()) ?: ""
     val lastDate = dates.lastOrNull() ?: ""
+    val datesList = listOf(firstDate, date2, date3, lastDate)
 
-    val dateList = listOf(firstDate, date2, date3, lastDate)
-
-    val animateProgress = remember {
-        Animatable(initialValue = 0f)
-    }
-    
+    val animationProgress = remember { Animatable(initialValue = 0f) }
     LaunchedEffect(key1 = Unit) {
-        animateProgress.animateTo(targetValue = 1f, tween(durationMillis = 3000))
+        animationProgress.animateTo(targetValue = 1f, tween(durationMillis = 3000))
     }
 
     Canvas(modifier = modifier) {
         val graphWidth = size.width
         val graphHeight = size.height
-        val points = calculatePoints(dataPointsValue, graphWidth, graphHeight)
+        val points = calculatePoints(dataPointValues, graphWidth, graphHeight)
         val path = createPath(points)
-        val filledPath = createFilledPath(path, graphWidth, graphHeight)
-        
-        valueList.forEachIndexed { index, value ->
+        val filledPath = createFilledPath(path, graphHeight, graphWidth)
+
+        valuesList.forEachIndexed { index, value ->
             val graph80PercentHeight = graphHeight * 0.8f
             val graph5PercentHeight = graphHeight * 0.05f
             val graph10PercentWidth = graphWidth * 0.1f
             val xPosition = 0f
             val yPosition = (graph80PercentHeight / noOfParts) * index
-
             drawText(
                 textMeasurer = textMeasurer,
                 text = "$value",
                 style = textStyle,
                 topLeft = Offset(x = xPosition, y = yPosition)
             )
-
             drawLine(
                 color = helperLineColor,
                 strokeWidth = pathAndCircleWidth,
@@ -98,22 +91,20 @@ fun LineGraph(
             )
         }
 
-        dateList.forEachIndexed { index, date ->
+        datesList.forEachIndexed { index, date ->
             val graph10PercentWidth = graphWidth * 0.1f
             val graph77PercentWidth = graphWidth * 0.77f
             val xPosition = (graph77PercentWidth / noOfParts) * index + graph10PercentWidth
             val yPosition = graphHeight * 0.9f
-
             drawText(
                 textMeasurer = textMeasurer,
                 text = date,
                 style = textStyle,
                 topLeft = Offset(x = xPosition, y = yPosition)
             )
-
         }
 
-        clipRect(right = graphWidth * animateProgress.value){
+        clipRect(right = graphWidth * animationProgress.value) {
             points.forEach { point ->
                 drawCircle(
                     color = pathAndCircleColor,
@@ -128,19 +119,18 @@ fun LineGraph(
                 style = Stroke(pathAndCircleWidth)
             )
 
-            if (dataPointsValue.isNotEmpty()){
+            if (dataPointValues.isNotEmpty()) {
                 drawPath(
                     path = filledPath,
-                    brush = Brush.linearGradient(
-                        colors = listOf(pathAndCircleColor.copy(alpha = 0.4f), Color.Transparent)
+                    brush = Brush.verticalGradient(
+                        listOf(pathAndCircleColor.copy(alpha = 0.4f), Color.Transparent)
                     )
                 )
             }
         }
-        
     }
-
 }
+
 
 fun createFilledPath(
     path: Path,
@@ -152,8 +142,8 @@ fun createFilledPath(
     val graph10PercentWidth = graphWidth * 0.1f
 
     filledPath.addPath(path)
-    filledPath.lineTo(x = graphWidth, y = graph85PercentHeight)
-    filledPath.lineTo(x = graph10PercentWidth, y = graph85PercentHeight)
+    filledPath.lineTo(graphWidth, graph85PercentHeight)
+    filledPath.lineTo(graph10PercentWidth, graph85PercentHeight)
     filledPath.close()
     return filledPath
 }
@@ -162,9 +152,9 @@ fun createPath(
     points: List<Offset>
 ): Path {
     val path = Path()
-    if (points.isNotEmpty()){
+    if (points.isNotEmpty()) {
         path.moveTo(points[0].x, points[0].y)
-        for (i in 1 until points.size){
+        for (i in 1 until points.size) {
             val currentPoint = points[i]
             val previousPoint = points[i - 1]
             val controlPointX = (previousPoint.x + currentPoint.x) / 2f
@@ -187,25 +177,23 @@ fun calculatePoints(
     val graph10PercentWidth = graphWidth * 0.1f
 
     val graph80PercentHeight = graphHeight * 0.8f
-    val graph5PercentHeight = graphHeight * 0.5f
+    val graph5PercentHeight = graphHeight * 0.05f
 
     val highestValue = dataPoint.maxOrNull() ?: 0f
     val lowestValue = dataPoint.minOrNull() ?: 0f
-    val rangeValue = (highestValue - lowestValue)
+    val valueRange = highestValue - lowestValue
 
-    val xPosition = dataPoint.indices.map { index ->
+    val xPositions = dataPoint.indices.map { index ->
         (graph90PercentWidth / (dataPoint.size - 1)) * index + graph10PercentWidth
     }
-
     val yPositions = dataPoint.map { value ->
-        val normalizeValue = (value - lowestValue) / rangeValue
-        val yPotion = (graph80PercentHeight * (1 - normalizeValue)) + graph5PercentHeight
-        yPotion
+        //Normalize each data point to a value between 0 and 1.
+        val normalizedValue = (value - lowestValue) / valueRange
+        val yPosition = (graph80PercentHeight * (1 - normalizedValue)) + graph5PercentHeight
+        yPosition
     }
-
-    return xPosition.zip(yPositions){ x, y ->
-        Offset(x = x, y = y)
-    }
+//    val yPositions = List(xPositions.size) { 0f }
+    return xPositions.zip(yPositions) { x, y -> Offset(x, y) }
 }
 
 

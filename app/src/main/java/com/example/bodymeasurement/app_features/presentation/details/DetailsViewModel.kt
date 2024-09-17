@@ -148,7 +148,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             databaseRepository.deleteBodyPartValue(bodyPartsValue)
                 .onSuccess {
-                    _uiEvent.send(UiEvent.SnackBar("Body Part Value Deleted Successfully"))
+                    _uiEvent.send(UiEvent.SnackBar("Body Part Value Deleted Successfully", "Undo"))
                 }
                 .onFailure { e ->
                     _uiEvent.send(UiEvent.SnackBar("Couldn't delete body part value. ${e.message}"))
