@@ -111,7 +111,7 @@ class AuthRepositoryImpl(
             val signInWithGoogleOption: GetSignInWithGoogleOption = GetSignInWithGoogleOption
                 .Builder(Constants.GOOGLE_CLIENT_ID)
                 .setNonce(nonce)
-            .build()
+                .build()
 
             val request : GetCredentialRequest = GetCredentialRequest
                 .Builder()

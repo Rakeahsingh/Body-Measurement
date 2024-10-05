@@ -56,9 +56,11 @@ fun DetailsScreen(
         viewModel.uiEvent.collectLatest { event ->
             when(event){
                 UiEvent.HideBottomSheet -> {}
+
                 UiEvent.Navigate -> {
                     onBackIconClick()
                 }
+
                 is UiEvent.SnackBar -> {
                     val result = snackBarHostState.showSnackbar(
                         message = event.message,
